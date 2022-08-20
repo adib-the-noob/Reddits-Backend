@@ -7,7 +7,7 @@ class PostSerializer(serializers.ModelSerializer):
     votes = serializers.SerializerMethodField()
     class Meta:
         model = Post
-        fields = ('title', 'url', 'poster', 'poster_id','votes','created_at',)
+        fields = ('id','title', 'url', 'poster', 'poster_id','votes','created_at',)
 
     def get_votes(self, post):
         return Vote.objects.filter(post=post).count()
