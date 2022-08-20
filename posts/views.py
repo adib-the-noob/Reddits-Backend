@@ -20,6 +20,13 @@ class PostRetrive(generics.RetrieveDestroyAPIView):
     def perform_create(self, serializer):
         serializer.save(poster=self.request.user)
 
+    def delete(self, request, *args, **kwargs):
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        if post.poster != request.user:
+            raise exceptions.PermissionDenied()
+        return super().delete(request, *args, **kwargs)
+        
+
 class VoteCreate(generics.CreateAPIView,mixins.DestroyModelMixin):
     serializer_class = VoteSerializer
     permission_classes = (permissions.IsAuthenticated,)
